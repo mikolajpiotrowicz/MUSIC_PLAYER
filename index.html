@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+    <title></title>
+
+    <meta name="viewport" content="initial-scale=1.0" />
+    <link rel="shortcut icon" href="images/favicon.ico" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js" integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js" integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" crossorigin="anonymous"></script>
+
+    <!--[if lt IE 10]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+<body>
+<header id="page-header" class="page-header">
+    <nav id="page-nav" class="page-nav">
+    </nav>
+
+</header>
+<div id="page-content" class="page-content" role="main">
+    <!--<img class="cover upcover" src="evil.jpg" alt="Album cover" />-->
+    <div class="container">
+        <div class="carousel">
+            <div class="item a"><img class="cover upcover" src="evil.jpg" alt="Album cover" /></div>
+            <div class="item b"><img class="cover upcover" src="evil2.jpg" alt="Album cover" /></div>
+            <div class="item c"><img class="cover upcover" src="evil.jpg" alt="Album cover" /></div>
+            <div class="item d"><img class="cover upcover" src="evil2.jpg" alt="Album cover" /></div>
+            <div class="item e"><img class="cover upcover" src="evil.jpg" alt="Album cover" /></div>
+            <div class="item f"><img class="cover upcover" src="evil2.jpg" alt="Album cover" /></div>
+        </div>
+    </div>
+    <img class="cover undercover" src="evil.jpg" alt="Album cover" />
+    <div class="controls">
+        <h4 class="title">Evil Pimp - Lights On Da Bucket</h4>
+        <div class="buttons">
+            <i id="repeat" class="fas fa-redo-alt smaller-button"></i>
+            <a id="previous"><i class="fas fa-step-backward"></i></a>
+            <a id="play"><i class="fas fa-play"></i></a>
+            <a id="next"> <i  class="fas fa-step-forward"></i></a>
+            <i id="random" class="fas fa-random smaller-button"></i>
+        </div>
+        <input class="timeControl" id="timeControl" value="0" max="235" type="range" />
+        <input class="volumeControl" id="volumeControl" value="100" type="range" />
+    </div>
+</div>
+<footer id="page-footer" class="page-footer">
+    <div class="socials">
+
+    </div>
+</footer>
+<script src="howler.min.js"></script>
+<script src="id3.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
