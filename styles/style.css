@@ -31,6 +31,7 @@ body {
     z-index: 100;
 }
 .undercover {
+    top: 50% !important;
     z-index: 0;
     filter: blur(25px);
     max-height: 800px;
@@ -265,7 +266,7 @@ body {
     z-index:100;
     position: absolute;
     transform: translate(-50%, -50%);
-    top: 50%;
+    top: 56%;
     left: 50%;
 }
 

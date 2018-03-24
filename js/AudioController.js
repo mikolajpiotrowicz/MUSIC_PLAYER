@@ -1,6 +1,5 @@
-export class AudioController {
+class AudioController {
     constructor(Player){
-        console.log("KONSTRUCT")
         this.player = Player;
         this.pauseBtn = undefined;
         this.playBtn = document.querySelector('#play');
@@ -8,6 +7,8 @@ export class AudioController {
         this.nextBtn = document.querySelector('#next');
         this.timeControl = document.querySelector('#timeControl');
         this.volumeControl = document.querySelector('#volumeControl');
+        this.title = document.querySelector('#title');
+        this.underCover = document.querySelector('.undercover')
         this.runInterval = undefined;
         this.currentRotation = 0;
     }
@@ -19,16 +20,17 @@ export class AudioController {
             this.setVolume(this.volumeControl.value)
         });
         this.previousBtn.onclick = () => {
-            console.log('next')
+            this.player.previousSong();
             this.rotateCarousel('previous');
         };
         this.nextBtn.onclick = () => {
-            console.log('previous')
+            this.player.nextSong();
             this.rotateCarousel('next');
         };
         this.timeControl.addEventListener('change', ()=> {
             this.player.sound.seek(this.timeControl.value)
         });
+
     }
     rotateCarousel(e) {
         if (e === "next") {
@@ -41,14 +43,20 @@ export class AudioController {
         carousel.style.webkitTransform = "rotateY(" + this.currentRotation + "deg)";
         carousel.style.transform = "rotateY(" + this.currentRotation + "deg)";
     }
+    setBackground(){
+        let musicPath = this.player.sound._src;
+        musicPath = musicPath.replace('music', 'images/covers');
+        musicPath = musicPath.replace('mp3', 'jpg');
+        console.log(musicPath);
+        this.underCover.src = musicPath;
 
+    }
     play(){
-        console.log(this.player.isPlaying)
         if(!this.player.isPlaying){
             this.player.play();
             this.playBtn.innerHTML = `<i class="fas fa-pause"></i>`
             this.setEvetns();
-            this.runInterval = setInterval(()=>{console.log(this.timeControl.value);this.timeControl.value = Number(this.timeControl.value) + 1;}, 1000)
+            this.runInterval = setInterval(()=>{this.timeControl.value = Number(this.timeControl.value) + 1;}, 1000)
         }
         else {
             this.player.pause();
@@ -58,7 +66,6 @@ export class AudioController {
         }
     }
     setVolume(volume){
-        console.log(volume);
         this.player.sound.volume(volume/100)
     }
 }
