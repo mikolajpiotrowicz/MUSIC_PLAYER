@@ -6,6 +6,7 @@ class Player {
         this.controller = new AudioController(this);
         this.controller.setEvetns(this);
         this.songNumber = 0;
+        this.songDuration = undefined;
         this.songs = [
             '../music/aceventura.mp3',
             '../music/adhea.mp3',
@@ -24,6 +25,7 @@ class Player {
         this.sound.on('load', () => {
             console.log(Math.floor(this.sound._duration), this.sound._duration, this.sound)
             this.controller.timeControl.max = Math.floor(this.sound._duration);
+            this.songDuration = Math.floor(this.sound._duration);
             this.controller.play();
         });
         this.controller.setBackground();
@@ -62,6 +64,7 @@ class Player {
         clearInterval(this.controller.runInterval);
         this.controller.timeControl.value = 0;
         this.loadSong(this.songs[this.songNumber]);
+        this.controller.rotateCarousel('next');
     }
     previousSong(){
         if(this.songNumber === 0){
@@ -74,5 +77,6 @@ class Player {
         this.controller.timeControl.value = 0;
         clearInterval(this.controller.runInterval);
         this.loadSong(this.songs[this.songNumber]);
+        this.controller.rotateCarousel('previous');
     }
 }

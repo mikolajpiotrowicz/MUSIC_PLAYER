@@ -11,6 +11,7 @@ class AudioController {
         this.underCover = document.querySelector('.undercover')
         this.runInterval = undefined;
         this.currentRotation = 0;
+        this.colors = {};
     }
     setEvetns(){
         this.playBtn.onclick = () => {
@@ -21,11 +22,9 @@ class AudioController {
         });
         this.previousBtn.onclick = () => {
             this.player.previousSong();
-            this.rotateCarousel('previous');
         };
         this.nextBtn.onclick = () => {
             this.player.nextSong();
-            this.rotateCarousel('next');
         };
         this.timeControl.addEventListener('change', ()=> {
             this.player.sound.seek(this.timeControl.value)
@@ -49,6 +48,8 @@ class AudioController {
         musicPath = musicPath.replace('mp3', 'jpg');
         console.log(musicPath);
         this.underCover.src = musicPath;
+        this.setGradientBG();
+
 
     }
     play(){
@@ -56,7 +57,13 @@ class AudioController {
             this.player.play();
             this.playBtn.innerHTML = `<i class="fas fa-pause"></i>`
             this.setEvetns();
-            this.runInterval = setInterval(()=>{this.timeControl.value = Number(this.timeControl.value) + 1;}, 1000)
+            this.runInterval = setInterval(()=>{
+                this.timeControl.value = Number(this.timeControl.value) + 1;
+                this.currentTime = this.timeControl.value;
+                if(this.currentTime >= this.player.songDuration) {
+                    this.player.nextSong();
+                }
+            }, 1000);
         }
         else {
             this.player.pause();
@@ -67,5 +74,45 @@ class AudioController {
     }
     setVolume(volume){
         this.player.sound.volume(volume/100)
+    }
+    setGradientBG(){
+        const img = document.createElement('img');
+        img.setAttribute('src', this.underCover.src)
+
+        img.addEventListener('load', () => {
+            const vibrant = new Vibrant(img);
+            let swatches = vibrant.swatches()
+            for (var swatch in swatches)
+                if (swatches.hasOwnProperty(swatch) && swatches[swatch])
+                    switch (swatch) {
+                        case 'Vibrant': {
+                            this.colors.vibrant = swatches[swatch].getHex();
+                            break;
+                        }
+                        case 'Muted': {
+                            this.colors.muted = swatches[swatch].getHex();
+                            break;
+                        }
+                        case 'DarkVibrant': {
+                            this.colors.darkVibrant = swatches[swatch].getHex();
+                            break;
+                        }
+                        case 'DarkMuted': {
+                            this.colors.darkMuted = swatches[swatch].getHex();
+                            break;
+                        }
+                        case 'LightVibrant': {
+                            this.colors.lightVibrant = swatches[swatch].getHex();
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+            }
+            console.log(`-webkit-linear-gradient(left, ${this.colors.vibrant}, ${this.colors.darkVibrant}, ${this.colors.vibrant})`, this.colors);
+            document.body.style.background = `-webkit-linear-gradient(left, ${this.colors.vibrant}, ${this.colors.darkVibrant}, ${this.colors.vibrant})`
+        });
+
+
     }
 }
