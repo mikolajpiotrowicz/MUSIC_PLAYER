@@ -7,6 +7,7 @@ class Player {
         this.controller.setEvetns(this);
         this.songNumber = 0;
         this.songDuration = undefined;
+        this.currentVolume = undefined;
         this.songs = [
             '../music/aceventura.mp3',
             '../music/adhea.mp3',
@@ -15,6 +16,8 @@ class Player {
             '../music/infected.mp3',
             '../music/merkaba.mp3'
         ];
+        this.currentVolume = this.controller.volumeControl.value;
+
         this.loadSong();
     }
     loadSong(){
@@ -26,9 +29,11 @@ class Player {
             console.log(Math.floor(this.sound._duration), this.sound._duration, this.sound)
             this.controller.timeControl.max = Math.floor(this.sound._duration);
             this.songDuration = Math.floor(this.sound._duration);
+            this.controller.setSongLength(Math.floor(this.sound._duration));
             this.controller.play();
         });
         this.controller.setBackground();
+
        // this.displaySongID3();
     }
     setID3(name){
@@ -48,9 +53,7 @@ class Player {
         this.sound.stop();
         this.isPlaying = false;
     }
-    next(){
 
-    }
     nextSong(){
         if(this.songNumber < 5){
             this.songNumber++

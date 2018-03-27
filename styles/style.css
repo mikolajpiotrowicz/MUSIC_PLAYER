@@ -10,6 +10,7 @@ html, body{
     bottom: 0;
     left: 0;
     right: 0;
+    font-family: mainFont;
 }
 body {
     /*overflow: hidden;*/
@@ -19,8 +20,11 @@ body {
     /*-webkit-animation: AnimationName 30s ease infinite;*/
     /*-moz-animation: AnimationName 30s ease infinite;*/
     /*animation: AnimationName 30s ease infinite;*/
+    -webkit-transition: background 0.5s linear;
+    -moz-transition: background 0.5s linear;
+    -o-transition: background 0.5s linear;
+    transition: background 0.5s linear;
 }
-
 @-webkit-keyframes AnimationName {
     0%{background-position:0% 50%}
     50%{background-position:100% 50%}
@@ -36,7 +40,6 @@ body {
     50%{background-position:100% 50%}
     100%{background-position:0% 50%}
 }
-
 .cover {
     position: absolute;
     top: 35%;
@@ -59,7 +62,51 @@ body {
 }
 .timeControl {
     width: 750px !important;
+
+}
+.timeControlWrapper {
+    width: 750px;
     margin-left: -150px !important;
+    position: relative;
+}
+.time__progress-bar--elapsed {
+    position: absolute ;
+    top: 0px;
+    left: 0px;
+    width: 0px;
+    height: 14px;
+    background-color: #941e00;
+    content: "";
+    margin-top: 4px;
+    border-radius: 10px;
+    z-index: 100;
+}
+.time__progress-bar--background {
+    position: absolute ;
+    top: 0px;
+    left: 0px;
+    width: 750px;
+    height: 14px;
+    background-color: #444;
+    content: "";
+    margin-top: 4px;
+    border-radius: 10px;
+    z-index: 80;
+}
+.time {
+    color: #DDD;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 8px;
+    width: 50px;
+    text-align: center;
+    width: 40px;
+}
+.time--elapsed {
+    left: -30px;
+}
+.time--tracklength {
+    right: -70px;
 }
 .controls {
     position: absolute;
@@ -67,24 +114,38 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 450px;
-
 }
 .title {
     font-size: 32px;
-    font-family: mainFont;
     margin: 20px 0px;
     color: #DDD;
     text-align: center;
 }
+
 #random, #repeat {
     margin-top: 5px;
     height: 20px !important;
     width: 20px !important;
 }
 .volumeControl {
+    display: none;
+    margin-left: 10px;
+    padding-top: 4px;
+}
+.volumeWrapper {
     position: absolute;
-    left: 108%;
-    top: 57%;
+    top: 0;
+    left: 0;
+    display: flex;
+}
+#volume:hover input{
+    display: block;
+}
+#volume {
+    line-height: 0;
+    position: relative;
+    width: 30px;
+    height: 30px;
 }
 .buttons {
     display: flex;
@@ -117,26 +178,33 @@ body {
     width: 100%;
     margin: -3.1px 0;
     background-color: transparent;
+    z-index: 1000000;
 }
 .timeControl[type=range]:focus {
     outline: none;
 }
 .timeControl[type=range]::-webkit-slider-runnable-track {
     width: 100%;
-    height: 20px;
+    height: 14px;
     cursor: pointer;
-    background: #46262c;
+    background: transparent;
     border-radius: 10px;
     border: 0px solid #010101;
+    z-index: 1000000;
 }
 .timeControl[type=range]::-webkit-slider-thumb {
-    height: 26px;
-    width: 26px;
+    height: 20px;
+    width: 20px;
     border-radius: 28px;
     background: #FFF;
     cursor: pointer;
     -webkit-appearance: none;
-    margin-top: -3px;
+    margin-top: -2px;
+    z-index: 1000000;
+    display: none;
+}
+.timeControlHovered[type=range]::-webkit-slider-thumb {
+    display: block;
 }
 .timeControl[type=range]:focus::-webkit-slider-runnable-track {
     background: #572f36;
@@ -194,10 +262,9 @@ body {
 .timeControl[type=range]:focus::-ms-fill-upper {
     background: #572f36;
 }
-
 .volumeControl[type=range] {
     -webkit-appearance: none;
-    width: 150px;
+    width: 100px;
     background-color: transparent;
 }
 .volumeControl[type=range]:focus {
@@ -277,7 +344,6 @@ body {
 .volumeControl[type=range]:focus::-ms-fill-upper {
     background: #572f36;
 }
-
 .container {
     margin: 0 auto;
     width: 300px;
@@ -290,7 +356,6 @@ body {
     top: 56%;
     left: 50%;
 }
-
 .carousel {
     height: 100%;
     width: 100%;
@@ -298,7 +363,6 @@ body {
     transform-style: preserve-3d;
     transition: transform 1s;
 }
-
 .item {
     display: block;
     position: absolute;
@@ -312,7 +376,6 @@ body {
     opacity: 0.95;
     border-radius: 10px;
 }
-
 .a {
     transform: rotateY(0deg) translateZ(250px);
     background: transparent;
@@ -337,7 +400,6 @@ body {
     transform: rotateY(300deg) translateZ(250px);
     background: transparent;
 }
-
 .next, .prev {
     color: #444;
     position: absolute;

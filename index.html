@@ -39,10 +39,15 @@
             <a id="previous"><i class="fas fa-step-backward"></i></a>
             <a id="play"><i class="fas fa-play"></i></a>
             <a id="next"> <i  class="fas fa-step-forward"></i></a>
-            <i id="random" class="fas fa-random smaller-button"></i>
+            <a id="volume">
+                <div class="volumeWrapper">
+                    <i id="vol-button" class="fas fa-volume-up"></i>
+                    <input class="volumeControl" id="volumeControl" value="0" type="range" />
+                </div>
+            </a>
         </div>
-        <input class="timeControl" id="timeControl" value="0" max="235" type="range" />
-        <input class="volumeControl" id="volumeControl" value="0" type="range" />
+        <div class="timeControlWrapper"><div class="time__progress-bar--background"></div><div class="time__progress-bar--elapsed"></div><span class="time time--elapsed">0:00</span><input class="timeControl" id="timeControl" value="0" max="235" type="range" ><span class="time time--tracklength">0:00</span></div>
+
     </div>
 </div>
 <footer id="page-footer" class="page-footer">
@@ -53,6 +58,7 @@
 <script src="js/libs/howler.min.js"></script>
 <script src="js/libs/id3.js"></script>
 <script src="js/libs/Vibrant.min.js"></script>
+<script src="js/Utils.js"></script>
 <script src="js/Player.js"></script>
 <script src="js/AudioController.js"></script>
 <script src="js/app.js"></script>
