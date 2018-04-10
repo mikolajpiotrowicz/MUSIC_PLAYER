@@ -1,58 +1,43 @@
 import isNode from 'detect-node';
 
-export default class Player {
-    constructor(url){
+class Player {
+    constructor(){
         if(isNode) { return; }
-        this.ac = new ( window.AudioContext || webkitAudioContext )();
+        this.url = 'http://localhost:3900/download?id=evil.mp3';
+        this.sound = document.createElement('audio');
+        this.sound.src = this.url;
+        this.playing = false;
+        this.setEvents();
+
+    }
+    setSource(url){
         this.url = url;
-        this.fetch();
     }
-
-    fetch() {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', this.url, true);
-        console.log('fetching ');
-        xhr.responseType = 'arraybuffer';
-        xhr.onload = function() {
-            console.log('loaded');
-            console.log(xhr.response)
-            this.decode(xhr.response);
-        }.bind(this);
-        xhr.send();
-    }
-    decode(arrayBuffer){
-        console.log(arrayBuffer)
-        this.ac.decodeAudioData(arrayBuffer, function( audioBuffer ) {
-            console.log(audioBuffer)
-            this.buffer = audioBuffer;
+    setEvents(){
+        this.sound.addEventListener('timeupdate',() => {
+            if(this.timeupdateCb) this.timeupdateCb();
+        });
+        this.sound.addEventListener('canplay',() => {
+            if(this.oncanplayCb) this.oncanplayCb();
+            console.log('canplay event')
             this.play();
-        }.bind(this));
+        });
+        this.sound.addEventListener('loadedmetadata',() => {
+            console.log('loadmetadata')
+            this.sound.currentTime = 0;
+        });
     }
-    connect(){
 
-        if ( this.playing ) {
-            this.pause();
-        }
-        this.source = this.ac.createBufferSource();
-        this.source.buffer = this.buffer;
-        this.source.connect(this.ac.destination);
-    }
     play(){
-        this.connect();
-        this.position = typeof position === 'number' ? position : this.position || 0;
-        this.startTime = this.ac.currentTime - ( this.position || 0 );
-        this.source.start(this.ac.currentTime, this.position);
+        this.sound.play();
         this.playing = true;
     }
-    pause(){
 
-        if ( this.source ) {
-            this.source.stop(0);
-            this.source = null;
-            this.position = this.ac.currentTime - this.startTime;
-            this.playing = false;
-        }
+    pause(){
+        this.sound.pause(0);
+        this.playing = false;
     }
+
     toggle(){
         if ( !this.playing ) {
             this.play();
@@ -61,16 +46,14 @@ export default class Player {
             this.pause();
         }
     }
+    setVolume(volume){
+        this.sound.volume = volume;
+    }
     seek(time){
-        if ( this.playing ) {
-            this.play(time);
-        }
-        else {
-            this.position = time;
-        }
+       this.sound.currentTime = time;
+       this.sound.play();
     }
 
 }
-
-
-
+const player = new Player();
+export default player;

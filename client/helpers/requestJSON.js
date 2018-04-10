@@ -11,7 +11,6 @@ export default async function requestJSON({method, href, host, pathname, search,
     search = search || location.search;
     href = href || `//${host}${pathname}${search}`;
     method = method || "GET";
-    console.log("REQ JSON", href)
     const response = await axios({
         method: method.toLowerCase(),
         url: href,

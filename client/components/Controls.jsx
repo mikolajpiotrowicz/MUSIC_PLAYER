@@ -1,64 +1,45 @@
 import React from 'react'
 import {fetchInitialData, getInitialData} from "../helpers/initialData";
-import Player from '../helpers/Player';
 import ButtonsPanel from '../components/ButtonsPanel'
 import Carousel from '../components/Carousel';
 import Timeline from '../components/TImeline';
 import TrackTitle from '../components/TrackTitle';
-import Playlist from '../components/Playlist';
 import isNode from 'detect-node';
+import Player from '../helpers/Player';
+
 export default class Controls extends React.Component {
     constructor() {
         super();
         this.state = {
             ...getInitialData(),
-            sound: undefined,
-            timeline: React.createRef()
+            timeline: undefined
         };
+        this.reRender = this.reRender.bind(this);
+        Player.oncanplayCb = this.reRender;
+        Player.timeupdateCb = this.reRender;
         this.next = this.next.bind(this);
         this.previous = this.previous.bind(this);
         this.toggle = this.toggle.bind(this);
         this.setVolume = this.setVolume.bind(this);
+        this.setBG = this.setBG.bind(this);
     }
 
     async componentDidMount() {
         this.setState({
             ...(await fetchInitialData()),
-            sound: (isNode) ? undefined : document.createElement('audio')
         });
-        if(this.state.sound){
-            this.state.sound.src = 'http://localhost:3900/download?id=evil.mp3#t=4.5';
-            this.setSoundEvents();
-        }
-
     }
 
-    componentWillUnmount() {
-        clearInterval(this.interval);
-    }
-    setSoundEvents(){
-        this.state.sound.addEventListener('timeupdate',() => {
-            this.state.timeline.current.setDot();
-            this.setState({});
-        });
-        this.state.sound.addEventListener('canplay',() => {
-            this.toggle();
-        });
-        this.state.sound.addEventListener('loadedmetadata',() => {
-            this.state.sound.currentTime = 77;
-        });
-    }
     rotateCarousel(direction){
         this.carousel.rotateCarousel(direction);
     }
     setVolume(volume){
-        this.state.sound.volume = volume;
+        Player.setVolume = volume;
     }
     toggle(){
-        if(this.state.sound.paused) this.state.sound.play();
-        else this.state.sound.pause();
+        if(!Player.playing) Player.play();
+        else Player.pause();
         this.setState({});
-
     }
     next(){
         this.rotateCarousel('next')
@@ -66,16 +47,19 @@ export default class Controls extends React.Component {
     previous(){
         this.rotateCarousel('previous')
     }
+    setBG(palette){
+        this.setState({palette});
+    }
+    reRender(){
+        this.setState({});
+    }
     render() {
         return (
             <div className="controls">
-                <div className='bg1'></div>
-                <div className='bg2'> </div>
-                <Playlist/>
-                <Carousel ref={(carousel) => { this.carousel = carousel; }}/>
+                <Carousel setBackground={this.props.setBackground} ref={(carousel) => { this.carousel = carousel; }}/>
                 <TrackTitle/>
                 <ButtonsPanel controller={this} ref={(input) => { this.buttonsPanel = input; }}/>
-                <Timeline sound={this.state.sound} ref={this.state.timeline}/>
+                <Timeline player={this.state.player}/>
             </div>
             )}
 }

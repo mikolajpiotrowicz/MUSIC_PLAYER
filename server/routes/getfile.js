@@ -5,8 +5,6 @@ const fs = require('fs');
 router.get('/', async (req, res) => {
     var fileId = req.query.id;
     var file = 'static/' + fileId;
-    console.log('file', file);
-    console.log('dirname', __dirname);
     fs.exists(file,function(exists){
         console.log('exist ', exists)
         if(exists)

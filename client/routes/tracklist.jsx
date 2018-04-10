@@ -15,17 +15,6 @@ export default class Chakras extends React.Component {
         this.setState({
             ...(await fetchInitialData()),
         });
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'http://localhost:3900/getfile');
-        xhr.responseType = 'arraybuffer';
-
-        xhr.onload = function () {
-
-            console.log(isMp3(new Uint8Array(this.response)))
-            //=> true
-        };
-
-        xhr.send();
     }
 
     componentWillUnmount() {

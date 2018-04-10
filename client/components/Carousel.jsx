@@ -1,6 +1,6 @@
 import React from 'react'
 import {fetchInitialData, getInitialData} from "../helpers/initialData";
-require('../helpers/Player');
+import * as Vibrant from 'node-vibrant'
 
 export default class Carousel extends React.Component {
     constructor() {
@@ -15,12 +15,15 @@ export default class Carousel extends React.Component {
         this.setState({
             ...(await fetchInitialData()),
         });
+        Vibrant.from('static/images/covers/aceventura.jpg').getPalette()
+            .then((palette) => {this.props.setBackground(palette.DarkMuted, palette.Vibrant)});
     }
     rotateCarousel(e) {
         if (e === "previous") {this.state.currentRotation += 60;}
         if (e == "next") {this.state.currentRotation -= 60;}
         this.carousel.style.webkitTransform = "rotateY(" + this.state.currentRotation + "deg)";
         this.carousel.style.transform = "rotateY(" + this.state.currentRotation + "deg)";
+
     }
     render() {
         return (

@@ -11,6 +11,7 @@ export default class Controls extends React.Component {
         this.state = {
             currentDirectory: '/',
             files: undefined,
+            showInfo: false,
             ...getInitialData(),
         };
         this.getDirectory = this.getDirectory.bind(this);
@@ -18,7 +19,7 @@ export default class Controls extends React.Component {
 
     async getDirectory(dirname) {
         const data = await requestJSON({
-            pathname: '/getdirectory',
+            pathname: '/getdirectory/list',
             search: "?" + qs.stringify({path: `${this.state.currentDirectory}/${dirname}`})
         });
         this.setState({
@@ -29,7 +30,7 @@ export default class Controls extends React.Component {
 
     async previousDirectory() {
         const data = await requestJSON({
-            pathname: '/getdirectory',
+            pathname: '/getdirectory/list',
             search: "?" + qs.stringify({path: this.state.currentDirectory.substr(0, this.state.currentDirectory.lastIndexOf("/"))})
         });
         this.setState({
@@ -38,13 +39,9 @@ export default class Controls extends React.Component {
         });
     }
 
-    async getFile(path) {
-
-    }
-
     async componentDidMount() {
         const data = await requestJSON({
-            pathname: '/getdirectory'
+            pathname: '/getdirectory/list'
         });
         this.setState({
             files: this.sortList(data.files)
@@ -57,20 +54,28 @@ export default class Controls extends React.Component {
     }
 
     render() {
+        let style = {};
+        if (this.state.showInfo) style = {
+            width: '275px'
+        };
+        else style = {
+            width: '210px'
+        }
         let fileList = null;
         if (this.state.files) {
             console.log(this.state.files)
             fileList = this.state.files.map((f, i) =>
                 <div key={i} onClick={() => (f.isDirectory) ? this.getDirectory(f.name) : this.getFile(f.name)}
                      className='fileRow'>
-                    <a>{f.name}{(f.isDirectory ?
-                        <FontAwesomeIcon icon='folder'/> : null)}
-                    </a>
+                    <div><a className='fileName'>{f.name}</a>{this.state.showInfo ? <div className='fileSize'>{`${parseInt(f.size/1024/1024).toFixed(2)}MB`}</div> : null}{(f.isDirectory ?
+                        <FontAwesomeIcon className={'folder'} icon='folder'/> : null)}
+                        {(f.mime && f.mime.startsWith("image/")) ? <img src={'/getdirectory/avatar?' + qs.stringify({path: `${this.state.currentDirectory}/${f.name}`})} /> : null}
+                    </div>
                 </div>);
         }
 
         return (
-            <div className="playlist">
+            <div style={style} className="playlist">
                 <div className='playlist__control-panel'>
                     <FontAwesomeIcon
                         onClick={() => {
@@ -81,11 +86,14 @@ export default class Controls extends React.Component {
                     <FontAwesomeIcon icon='trash'
                                      className='playlist__control-panel--button'/>
                     <FontAwesomeIcon icon='info-circle'
-                                     className='playlist__control-panel--button'/>
+                                     className='playlist__control-panel--button'
+                                     onClick={() => {
+                                         (this.state.showInfo) ? this.setState({showInfo: false}) : this.setState({showInfo: true})
+                                     }}/>
 
 
                 </div>
-                {(this.state.files && this.state.files[0].type === 'announce') ? <div onClick={() => {this.previousDirectory()}} className='fileRow'>{this.state.files[0].name}</div> : fileList}
+                {(this.state.files && this.state.files[0].type === 'announce') ? <div onClick={() => {this.previousDirectory()}} className='fileRow'><a className='fileName'>{this.state.files[0].name}</a></div> : fileList}
             </div>
         )
     }

@@ -12,7 +12,6 @@ router.get('/', (req, res) => {
     fs.readdir(testFolder, (err, files) => {
         files.forEach(file => {
             let filePath = `./static/images/covers/${file}`
-            console.log(getFilesizeInBytes(filePath));
         });
         files.forEach(file => {
             let filePath = `./static/images/covers/${file}`
