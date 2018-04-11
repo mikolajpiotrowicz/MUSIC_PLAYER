@@ -4,8 +4,8 @@ import ButtonsPanel from '../components/ButtonsPanel'
 import Carousel from '../components/Carousel';
 import Timeline from '../components/TImeline';
 import TrackTitle from '../components/TrackTitle';
-import isNode from 'detect-node';
 import Player from '../helpers/Player';
+import Playlist from '../helpers/Playlist'
 
 export default class Controls extends React.Component {
     constructor() {
@@ -22,6 +22,7 @@ export default class Controls extends React.Component {
         this.toggle = this.toggle.bind(this);
         this.setVolume = this.setVolume.bind(this);
         this.setBG = this.setBG.bind(this);
+        this.playlist = Playlist;
     }
 
     async componentDidMount() {
@@ -30,38 +31,46 @@ export default class Controls extends React.Component {
         });
     }
 
-    rotateCarousel(direction){
-        this.carousel.rotateCarousel(direction);
-    }
-    setVolume(volume){
+    setVolume(volume) {
         Player.setVolume = volume;
     }
-    toggle(){
-        if(!Player.playing) Player.play();
+
+    toggle() {
+        if (!Player.playing) Player.play();
         else Player.pause();
         this.setState({});
     }
-    next(){
-        this.rotateCarousel('next')
+
+    next() {
+        Playlist.next();
     }
-    previous(){
-        this.rotateCarousel('previous')
+
+    previous() {
+        Playlist.previous();
     }
-    setBG(palette){
+
+    setBG(palette) {
         this.setState({palette});
     }
-    reRender(){
+
+    reRender() {
         this.setState({});
     }
+
     render() {
         return (
             <div className="controls">
-                <Carousel setBackground={this.props.setBackground} ref={(carousel) => { this.carousel = carousel; }}/>
+                <Carousel setBackground={this.props.setBackground} ref={(carousel) => {
+                    this.carousel = carousel;
+                }}/>
                 <TrackTitle/>
-                <ButtonsPanel controller={this} ref={(input) => { this.buttonsPanel = input; }}/>
+                <ButtonsPanel controller={this} ref={(input) => {
+                    this.buttonsPanel = input;
+                }}/>
                 <Timeline player={this.state.player}/>
             </div>
-            )}
+        )
+    }
 }
 
 

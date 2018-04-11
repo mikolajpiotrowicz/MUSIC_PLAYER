@@ -56,14 +56,13 @@ export default class Controls extends React.Component {
     render() {
         let style = {};
         if (this.state.showInfo) style = {
-            width: '275px'
+            width: '400px'
         };
         else style = {
-            width: '210px'
+            width: '325px'
         }
         let fileList = null;
         if (this.state.files) {
-            console.log(this.state.files)
             fileList = this.state.files.map((f, i) =>
                 <div key={i} onClick={() => (f.isDirectory) ? this.getDirectory(f.name) : this.getFile(f.name)}
                      className='fileRow'>

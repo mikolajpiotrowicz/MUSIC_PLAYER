@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs-extra';
 import sharp from 'sharp';
 import mime from 'mime-types';
+
 export const router = require('express-promise-router')();
 //
 // function getImageAvatar(filePath){
@@ -24,7 +25,7 @@ router.get('/avatar', async (req, res) => {
     filePath = path.normalize(filePath).replace(/^(\.\.[\/\\])+/, '');
     filePath = path.join("./static", filePath);
     let thumbnail = await sharp(filePath).resize(32, 32).jpeg().toBuffer();
-    res.writeHead(200, {'Content-Type': 'image/jpeg' });
+    res.writeHead(200, {'Content-Type': 'image/jpeg'});
     res.end(thumbnail, 'binary');
 });
 
@@ -50,7 +51,7 @@ router.get('/list', async (req, res) => {
         };
     }));
 
-    if(initialData.files.length === 0) {
+    if (initialData.files.length === 0) {
         initialData.files.push({
             name: 'Nothing here...',
             size: 0,
@@ -58,6 +59,27 @@ router.get('/list', async (req, res) => {
             type: 'announce'
         })
     }
+    res.json(initialData);
+});
+router.get('/playlist', async (req, res) => {
+    const initialData = {
+        albums: []
+    };
+
+    const folderPath = "./static/music/Albums";
+    const albums = await fs.readdir(folderPath);
+
+    initialData.albums = await Promise.all(albums.map(async album => {
+        console.log(album, "album");
+        let albumPath = path.join("./static/music/Albums", album);
+        const albumTracks = await fs.readdir(albumPath);
+        return {
+            albumName: album,
+            tracks: albumTracks
+        }
+    }));
+
+
     res.json(initialData);
 });
 

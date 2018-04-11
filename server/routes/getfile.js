@@ -6,7 +6,6 @@ router.get('/', async (req, res) => {
     var fileId = req.query.id;
     var file = 'static/' + fileId;
     fs.exists(file,function(exists){
-        console.log('exist ', exists)
         if(exists)
         {
             var rstream = fs.createReadStream(file);

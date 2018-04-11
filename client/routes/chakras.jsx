@@ -27,7 +27,6 @@ export default class Chakras extends React.Component {
         clearInterval(this.interval);
     }
     setBackground(color1, color2){
-        console.log('im called', color1, color2);
         const colors = [`rgb(${color1._rgb[0]},${color1._rgb[1]},${color1._rgb[2]})`,`rgb(${color2._rgb[0]},${color2._rgb[1]},${color2._rgb[2]})`];
         const divStyle = {
             background: `-webkit-linear-gradient(left, ${colors[1]}, ${colors[0]}, ${colors[1 ]})`
@@ -37,7 +36,6 @@ export default class Chakras extends React.Component {
         })
     }
     render() {
-        console.log(this.state.style, 'style')
         return (
             <div style={this.state.style} className="app">
                 <img className='logo' src='./static/images/logo.png'/>

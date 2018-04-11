@@ -12,20 +12,10 @@ export default class VolumeControl extends React.Component {
         };
     }
 
-    async componentDidMount() {
-        this.setState({
-            ...(await fetchInitialData()),
-        });
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.interval);
-    }
-
     render() {
         return (
             <div id="volume" className="volumeWrapper">
-                <FontAwesomeIcon icon='volume-up'/>
+                {this.state.muted ? <FontAwesomeIcon icon='volume-up'/> : <FontAwesomeIcon icon='volume-up'/>}
                 <input onChange={(e) => {Player.setVolume(e.target.value/100)}} className="volumeControl" id="volumeControl" defaultValue='50' type="range" />
             </div>
         )}

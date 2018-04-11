@@ -14,24 +14,19 @@ export default class ButtonsPanel extends React.Component {
         };
     }
 
-    async componentDidMount() {
-        this.setState({
-            ...(await fetchInitialData()),
-        });
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.interval);
-    }
-
     render() {
         return (
             <div className="buttons">
                 <FontAwesomeIcon icon='redo-alt'/>
-                <a onClick={this.props.controller.previous}><FontAwesomeIcon icon='step-backward'/></a>
-                <a onClick={this.props.controller.toggle}><FontAwesomeIcon
-                    icon={(!Player.playing) ? 'play' : 'pause'}/></a>
-                <a onClick={this.props.controller.next}><FontAwesomeIcon icon='step-forward'/></a>
+                <a onClick={this.props.controller.previous}>
+                    <FontAwesomeIcon icon='step-backward'/>
+                </a>
+                <a onClick={this.props.controller.toggle}>
+                    <FontAwesomeIcon icon={(!Player.playing) ? 'play' : 'pause'}/>
+                </a>
+                <a onClick={this.props.controller.next}><
+                    FontAwesomeIcon icon='step-forward'/>
+                </a>
                 <VolumeControl setVolume={this.props.controller.setVolume}/>
             </div>
         )

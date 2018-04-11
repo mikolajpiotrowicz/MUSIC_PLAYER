@@ -1,31 +1,37 @@
 import isNode from 'detect-node';
-
+import Playlist from './Playlist';
 class Player {
     constructor(){
         if(isNode) { return; }
-        this.url = 'http://localhost:3900/download?id=evil.mp3';
         this.sound = document.createElement('audio');
-        this.sound.src = this.url;
         this.playing = false;
         this.setEvents();
 
     }
-    setSource(url){
-        this.url = url;
+    setSrc(track){
+        this.url = `http://localhost:3900/download?id=music/Albums/${track.albumName}/${track.trackName}`;
+        this.sound.src = this.url;
+
+        return track;
     }
     setEvents(){
+
         this.sound.addEventListener('timeupdate',() => {
             if(this.timeupdateCb) this.timeupdateCb();
         });
         this.sound.addEventListener('canplay',() => {
             if(this.oncanplayCb) this.oncanplayCb();
-            console.log('canplay event')
             this.play();
         });
         this.sound.addEventListener('loadedmetadata',() => {
             console.log('loadmetadata')
             this.sound.currentTime = 0;
         });
+        this.sound.addEventListener('ended',() => {
+            console.log("KYURWA");
+            Playlist.next();
+        });
+
     }
 
     play(){
